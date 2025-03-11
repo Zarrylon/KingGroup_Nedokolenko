@@ -19,4 +19,4 @@ source_group("Header Files" FILES ${HEADER})
 source_group("Source Files" FILES ${SRC})
 
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/input.txt ${CMAKE_BINARY_DIR}/src/data/input.txt COPYONLY)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR}/src)

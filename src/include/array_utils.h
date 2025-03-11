@@ -17,6 +17,8 @@
 namespace kg
 {
 #pragma region Insert
+
+	/* sequence containers */
 	template <typename TSubContainer, typename Value>
 	auto Insert(TSubContainer& container, Value&& value)
 		-> decltype(container.push_back(std::forward<Value>(value)), void())
@@ -24,6 +26,7 @@ namespace kg
 		container.push_back(std::forward<Value>(value));
 	}
 
+	/* forward_list */
 	template <typename TSubContainer, typename Value>
 	auto Insert(TSubContainer& container, Value&& value)
 		-> decltype(container.insert_after(container.before_begin(), std::forward<Value>(value)), void())
@@ -43,6 +46,7 @@ namespace kg
 		}
 	}
 
+	/* set */
 	template <typename TSubContainer, typename Value>
 	auto Insert(TSubContainer& container, Value&& value)
 		-> decltype(container.insert(std::forward<Value>(value)), void())
@@ -50,13 +54,6 @@ namespace kg
 		container.insert(std::forward<Value>(value));
 	}
 
-	template <typename TSubContainer, typename Value>
-	auto Insert(TSubContainer& container, Value&& value)
-		-> decltype(container.insert(typename TSubContainer::value_type(std::forward<Value>(value), 0)), void())
-	{
-		size_t index = container.size();
-		container.insert(typename TSubContainer::value_type(std::forward<Value>(value), index + 1));
-	}
 #pragma endregion
 
 #pragma region Print
@@ -72,6 +69,7 @@ namespace kg
 		std::cout << std::endl;
 	}
 
+	/* pair containers */
 	template <typename Iterator>
 	typename std::enable_if<is_pair<typename std::iterator_traits<Iterator>::value_type>::value>::type
 		Print(Iterator begin, Iterator end)
@@ -99,7 +97,6 @@ namespace kg
 	template<typename Iterator, typename Compare = std::less<>>
 	void QSort(const Iterator begin, const Iterator end, Compare comp = Compare())
 	{
-
 		if (std::distance(begin, end) > 1)
 		{
 			auto last = std::prev(end);
@@ -156,29 +153,6 @@ namespace kg
 			{
 				kg::Insert(result, *i);
 				sA.erase(*i);
-			}
-		}
-
-		return result;
-	}
-
-	template<template<typename...> typename TSubContainer, typename Type>
-	typename std::enable_if<is_map<TSubContainer<Type>>::value, TSubContainer<Type>>::type
-		Intersection(TSubContainer<Type>& a, TSubContainer<Type>& b)
-	{
-		std::unordered_set<Type> sA;
-
-		for (auto it : a)
-			sA.insert(it.first);
-
-		TSubContainer<Type> result;
-
-		for (const auto it : b)
-		{
-			if (sA.find(it.first) != sA.end())
-			{
-				kg::Insert(result, it.first);
-				sA.erase(it.first);
 			}
 		}
 

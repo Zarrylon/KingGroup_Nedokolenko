@@ -30,6 +30,7 @@ namespace kg
 				throw std::out_of_range("Index out of range");
 		}
 
+		/* string -> int */
 		template<typename T = Type>
 		typename std::enable_if<std::is_integral<T>::value, T>::type
 			ConvertString(const std::string& str)
@@ -37,6 +38,7 @@ namespace kg
 			return std::stoi(str);
 		}
 
+		/* string -> float */
 		template<typename T = Type>
 		typename std::enable_if<std::is_floating_point<T>::value, T>::type
 			ConvertString(const std::string& str)
@@ -44,6 +46,7 @@ namespace kg
 			return std::stof(str);
 		}
 
+		/* string -> string */
 		template<typename T = Type>
 		typename std::enable_if<std::is_same<T, std::string>::value, T>::type
 			ConvertString(const std::string& str)
